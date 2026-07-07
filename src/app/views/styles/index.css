@@ -55,6 +55,20 @@
 	--dashboard-warning: #fbbf24;
 }
 
+.dashboard-header-surface {
+	background:
+		radial-gradient(
+			circle at top left,
+			rgba(37, 99, 235, 0.18),
+			transparent 44%
+		),
+		linear-gradient(
+			135deg,
+			var(--dashboard-panel-strong),
+			var(--dashboard-panel)
+		);
+}
+
 body {
 	margin: 0;
 	background: var(--dashboard);
