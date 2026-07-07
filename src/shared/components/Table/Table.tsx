@@ -6,7 +6,7 @@ import { cn } from '@shared/utils'
 import { TableBody, TableHeader } from './components'
 import type { TableColumn, TableProps, TableSortState } from './Table.types'
 import {
-	compareValues,
+	compareValuesByDirection,
 	DEFAULT_PAGE_SIZE_OPTIONS,
 	getNextDirection,
 	getSortValue,
@@ -40,12 +40,11 @@ export const Table = <TData,>({
 		}
 
 		return [...data].sort((firstRow, secondRow) => {
-			const result = compareValues(
+			return compareValuesByDirection(
 				getSortValue(firstRow, column),
 				getSortValue(secondRow, column),
+				sort.direction,
 			)
-
-			return sort.direction === 'asc' ? result : -result
 		})
 	}, [columns, data, sort])
 

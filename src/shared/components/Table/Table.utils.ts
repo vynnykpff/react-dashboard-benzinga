@@ -93,6 +93,27 @@ export const compareValues = (a: TableSortValue, b: TableSortValue) => {
 	return collator.compare(String(first), String(second))
 }
 
+export const compareValuesByDirection = (
+	a: TableSortValue,
+	b: TableSortValue,
+	direction: TableSortDirection,
+) => {
+	const first = normalizeSortValue(a)
+	const second = normalizeSortValue(b)
+
+	if (first === second) {
+		return 0
+	}
+
+	if (isNil(first) || isNil(second)) {
+		return isNil(first) ? 1 : -1
+	}
+
+	const result = compareValues(a, b)
+
+	return direction === 'asc' ? result : -result
+}
+
 export const getNextDirection = (
 	currentSort: TableSortState | undefined,
 	columnId: string,

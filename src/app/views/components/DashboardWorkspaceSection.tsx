@@ -2,6 +2,7 @@ import { Loader } from '@shared/components'
 
 import type { FinancialRecord } from '@/app/hooks/useCompanyFinancials'
 
+import { CompanyFilingsTable } from './CompanyFilingsTable'
 import { SummaryCard } from './SummaryCard'
 
 type DashboardWorkspaceSectionProps = {
@@ -35,7 +36,7 @@ export const DashboardWorkspaceSection = ({
 					<div className="space-y-4">
 						<p className="max-w-3xl text-sm leading-6 text-dashboard-text-muted sm:text-base">
 							Showing {records.length} quarterly balance sheet entries derived
-							from the shared financial dataset for {selectedCompany}.
+							from the shared financial dataset for {selectedCompany}
 						</p>
 						{latestRecord ? (
 							<SummaryCard
@@ -43,6 +44,7 @@ export const DashboardWorkspaceSection = ({
 								filingDate={latestRecord.filing_date ?? 'N/A'}
 							/>
 						) : null}
+						<CompanyFilingsTable records={records} />
 					</div>
 				) : (
 					<div className="space-y-2">

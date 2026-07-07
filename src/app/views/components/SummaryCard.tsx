@@ -1,4 +1,6 @@
-type FinancialSummaryCardsProps = {
+import { formatCurrency } from '@shared/utils'
+
+type SummaryCardsProps = {
 	filingDate?: string
 	record: {
 		cash_and_short_term_equivalents?: number
@@ -10,25 +12,7 @@ type FinancialSummaryCardsProps = {
 	}
 }
 
-const currencyFormatter = new Intl.NumberFormat('en-US', {
-	notation: 'compact',
-	maximumFractionDigits: 1,
-	style: 'currency',
-	currency: 'USD',
-})
-
-const formatCurrency = (value?: number) => {
-	if (typeof value !== 'number') {
-		return 'N/A'
-	}
-
-	return currencyFormatter.format(value)
-}
-
-export const SummaryCard = ({
-	filingDate,
-	record,
-}: FinancialSummaryCardsProps) => {
+export const SummaryCard = ({ filingDate, record }: SummaryCardsProps) => {
 	const summaryItems = [
 		{ label: 'Total Assets', value: formatCurrency(record.total_assets) },
 		{ label: 'Total Equity', value: formatCurrency(record.total_equity) },

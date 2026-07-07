@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react'
 import type { SelectorOption } from '@shared/components'
 import { financials } from '@shared/data'
 
-export type FinancialRecord = (typeof financials)[number]
+export type FinancialRecord = (typeof financials)[number] & {
+	rowId: string
+}
 
 const compareFinancialRecords = (
 	leftRecord: FinancialRecord,
@@ -21,13 +23,18 @@ const compareFinancialRecords = (
 }
 
 const financialsByCompany = financials.reduce<Record<string, FinancialRecord[]>>(
-	(groupedFinancials, record) => {
-		record.symbols.forEach(symbol => {
+	(groupedFinancials, record, index) => {
+		const financialRecord: FinancialRecord = {
+			...record,
+			rowId: `financial-record-${index}`,
+		}
+
+		financialRecord.symbols.forEach(symbol => {
 			if (!groupedFinancials[symbol]) {
 				groupedFinancials[symbol] = []
 			}
 
-			groupedFinancials[symbol].push(record)
+			groupedFinancials[symbol].push(financialRecord)
 			groupedFinancials[symbol].sort(compareFinancialRecords)
 		})
 
