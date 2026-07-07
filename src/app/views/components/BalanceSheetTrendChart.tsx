@@ -74,6 +74,11 @@ const formatTooltipValue = (value: unknown, dataKey: string | number) => {
 	return formatCurrency(numericValue)
 }
 
+const hasBalanceSheetTotals = (record: FinancialRecord) =>
+	typeof record.total_assets === 'number' ||
+	typeof record.total_liabilities === 'number' ||
+	typeof record.total_equity === 'number'
+
 export const BalanceSheetTrendChart = ({
 	records,
 }: BalanceSheetTrendChartProps) => {
@@ -81,6 +86,10 @@ export const BalanceSheetTrendChart = ({
 		const recordsByQuarter = new Map<string, TrendChartPoint>()
 
 		records.forEach(record => {
+			if (!hasBalanceSheetTotals(record)) {
+				return
+			}
+
 			const period = formatPeriod(record)
 
 			if (recordsByQuarter.has(period)) {
@@ -96,8 +105,7 @@ export const BalanceSheetTrendChart = ({
 				totalAssets: record.total_assets ?? 0,
 				totalLiabilities,
 				totalEquity,
-				debtToEquity:
-					totalEquity !== 0 ? totalLiabilities / totalEquity : null,
+				debtToEquity: totalEquity !== 0 ? totalLiabilities / totalEquity : null,
 				hasLiabilitiesAboveAssets:
 					totalLiabilities > (record.total_assets ?? 0),
 			})
@@ -146,101 +154,109 @@ export const BalanceSheetTrendChart = ({
 					)}
 				</div>
 			</div>
-			<ChartContainer
-				config={chartConfig}
-				className="h-80 w-full aspect-auto"
-			>
-				<LineChart
-					accessibilityLayer
-					data={chartData}
-					margin={{ top: 8, right: 12, left: 12, bottom: 8 }}
+			{chartData.length > 0 ? (
+				<ChartContainer
+					config={chartConfig}
+					className="h-80 w-full aspect-auto"
 				>
-					<CartesianGrid vertical={false} />
-					<XAxis
-						dataKey="period"
-						tickLine={false}
-						axisLine={false}
-						tickMargin={10}
-						minTickGap={24}
-					/>
-					<YAxis
-						yAxisId="currency"
-						tickLine={false}
-						axisLine={false}
-						tickMargin={10}
-						width={64}
-						tickFormatter={currencyTickFormatter}
-					/>
-					<YAxis
-						yAxisId="ratio"
-						orientation="right"
-						tickLine={false}
-						axisLine={false}
-						tickMargin={10}
-						width={44}
-						tickFormatter={ratioTickFormatter}
-					/>
-					<ChartTooltip
-						cursor={false}
-						content={
-							<ChartTooltipContent
-								indicator="line"
-								labelFormatter={value => value}
-								formatter={(value, dataKey) =>
-									formatTooltipValue(value, dataKey)
-								}
-							/>
-						}
-					/>
-					<ChartLegend content={<ChartLegendContent />} />
-					<Line
-						yAxisId="currency"
-						dataKey="totalAssets"
-						type="monotone"
-						stroke="var(--color-totalAssets)"
-						strokeWidth={2}
-						dot={false}
-					/>
-					<Line
-						yAxisId="currency"
-						dataKey="totalLiabilities"
-						type="monotone"
-						stroke="var(--color-totalLiabilities)"
-						strokeWidth={2}
-						dot={false}
-					/>
-					<Line
-						yAxisId="currency"
-						dataKey="totalEquity"
-						type="monotone"
-						stroke="var(--color-totalEquity)"
-						strokeWidth={2}
-						dot={false}
-					/>
-					<Line
-						yAxisId="ratio"
-						dataKey="debtToEquity"
-						type="monotone"
-						stroke="var(--color-debtToEquity)"
-						strokeWidth={2}
-						strokeDasharray="4 4"
-						dot={false}
-						connectNulls
-					/>
-					{liabilityWarningPoints.map(point => (
-						<ReferenceDot
-							key={point.period}
-							yAxisId="currency"
-							x={point.period}
-							y={point.totalLiabilities}
-							r={5}
-							fill="var(--dashboard-warning)"
-							stroke="var(--dashboard-panel)"
-							strokeWidth={2}
+					<LineChart
+						accessibilityLayer
+						data={chartData}
+						margin={{ top: 8, right: 12, left: 12, bottom: 8 }}
+					>
+						<CartesianGrid vertical={false} />
+						<XAxis
+							dataKey="period"
+							tickLine={false}
+							axisLine={false}
+							tickMargin={10}
+							minTickGap={24}
 						/>
-					))}
-				</LineChart>
-			</ChartContainer>
+						<YAxis
+							yAxisId="currency"
+							tickLine={false}
+							axisLine={false}
+							tickMargin={10}
+							width={64}
+							tickFormatter={currencyTickFormatter}
+						/>
+						<YAxis
+							yAxisId="ratio"
+							orientation="right"
+							tickLine={false}
+							axisLine={false}
+							tickMargin={10}
+							width={44}
+							tickFormatter={ratioTickFormatter}
+						/>
+						<ChartTooltip
+							cursor={false}
+							content={
+								<ChartTooltipContent
+									indicator="line"
+									labelFormatter={value => value}
+									formatter={(value, dataKey) =>
+										formatTooltipValue(value, dataKey)
+									}
+								/>
+							}
+						/>
+						<ChartLegend content={<ChartLegendContent />} />
+						<Line
+							yAxisId="currency"
+							dataKey="totalAssets"
+							type="monotone"
+							stroke="var(--color-totalAssets)"
+							strokeWidth={2}
+							dot={false}
+						/>
+						<Line
+							yAxisId="currency"
+							dataKey="totalLiabilities"
+							type="monotone"
+							stroke="var(--color-totalLiabilities)"
+							strokeWidth={2}
+							dot={false}
+						/>
+						<Line
+							yAxisId="currency"
+							dataKey="totalEquity"
+							type="monotone"
+							stroke="var(--color-totalEquity)"
+							strokeWidth={2}
+							dot={false}
+						/>
+						<Line
+							yAxisId="ratio"
+							dataKey="debtToEquity"
+							type="monotone"
+							stroke="var(--color-debtToEquity)"
+							strokeWidth={2}
+							strokeDasharray="4 4"
+							dot={false}
+							connectNulls
+						/>
+						{liabilityWarningPoints.map(point => (
+							<ReferenceDot
+								key={point.period}
+								yAxisId="currency"
+								x={point.period}
+								y={point.totalLiabilities}
+								r={5}
+								fill="var(--dashboard-warning)"
+								stroke="var(--dashboard-panel)"
+								strokeWidth={2}
+							/>
+						))}
+					</LineChart>
+				</ChartContainer>
+			) : (
+				<div className="flex h-80 items-center justify-center rounded-xl border border-dashed border-dashboard-border bg-dashboard-muted/40 px-4 text-center">
+					<p className="max-w-md text-sm leading-6 text-dashboard-text-muted">
+						No balance sheet trend data available for this company
+					</p>
+				</div>
+			)}
 		</div>
 	)
 }
