@@ -3,6 +3,8 @@ import { type KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '@shared/components/Button'
 import { IconButton } from '@shared/components/IconButton'
+import { Input } from '@shared/components/Input'
+import { useDebounce } from '@shared/hooks'
 import { cn } from '@shared/utils'
 
 import type { SelectorOption, SelectorProps } from './Selector.types'
@@ -30,13 +32,15 @@ export const Selector = ({
 
 	const isSimple = variant === 'simple'
 	const selectedOption = options.find(option => option.value === value)
+	const debouncedQuery = useDebounce(query, 250)
+	const filterQuery = query ? debouncedQuery : ''
 
 	const filteredOptions = useMemo(() => {
 		if (!searchable) {
 			return options
 		}
 
-		const normalizedQuery = query.trim().toLowerCase()
+		const normalizedQuery = filterQuery.trim().toLowerCase()
 
 		if (!normalizedQuery) {
 			return options
@@ -49,7 +53,7 @@ export const Selector = ({
 				.toLowerCase()
 				.includes(normalizedQuery),
 		)
-	}, [options, query, searchable])
+	}, [filterQuery, options, searchable])
 
 	const enabledOptions = filteredOptions.filter(option => !option.disabled)
 
@@ -58,7 +62,7 @@ export const Selector = ({
 			return
 		}
 
-		window.setTimeout(() => searchInputRef.current?.focus(), 0)
+		setTimeout(() => searchInputRef.current?.focus(), 0)
 	}, [isOpen, searchable])
 
 	useEffect(() => {
@@ -241,12 +245,8 @@ export const Selector = ({
 				{isOpen ? (
 					<div className="absolute left-0 top-full z-20 mt-2 w-full overflow-hidden rounded-md border border-dashboard-border bg-dashboard-panel shadow-xl shadow-slate-950/10 dark:shadow-black/30">
 						{searchable ? (
-							<div className="flex items-center gap-2 border-b border-dashboard-border bg-dashboard-panel-strong px-3 py-2">
-								<Search
-									className="size-4 shrink-0 text-dashboard-text-muted"
-									aria-hidden="true"
-								/>
-								<input
+							<div className="border-b border-dashboard-border bg-dashboard-panel-strong px-3 py-2">
+								<Input
 									ref={searchInputRef}
 									value={query}
 									onChange={event => {
@@ -255,7 +255,15 @@ export const Selector = ({
 									}}
 									onKeyDown={handleSearchKeyDown}
 									placeholder={searchPlaceholder}
-									className="h-9 min-w-0 flex-1 bg-transparent text-sm text-dashboard-text outline-none placeholder:text-dashboard-text-muted"
+									inputSize="sm"
+									leftIcon={
+										<Search
+											className="size-4"
+											aria-hidden="true"
+										/>
+									}
+									wrapperClassName="border-transparent bg-transparent px-0 shadow-none focus-within:border-transparent focus-within:ring-0"
+									className="text-sm"
 								/>
 							</div>
 						) : null}
