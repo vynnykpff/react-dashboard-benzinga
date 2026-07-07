@@ -1,3 +1,67 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+
+@theme {
+	--color-dashboard: var(--dashboard);
+	--color-dashboard-muted: var(--dashboard-muted);
+	--color-dashboard-panel: var(--dashboard-panel);
+	--color-dashboard-panel-strong: var(--dashboard-panel-strong);
+	--color-dashboard-border: var(--dashboard-border);
+	--color-dashboard-border-strong: var(--dashboard-border-strong);
+	--color-dashboard-text: var(--dashboard-text);
+	--color-dashboard-text-muted: var(--dashboard-text-muted);
+	--color-dashboard-accent: var(--dashboard-accent);
+	--color-dashboard-accent-strong: var(--dashboard-accent-strong);
+	--color-dashboard-accent-soft: var(--dashboard-accent-soft);
+	--color-dashboard-positive: var(--dashboard-positive);
+	--color-dashboard-negative: var(--dashboard-negative);
+	--color-dashboard-warning: var(--dashboard-warning);
+}
+
+:root {
+	color-scheme: light;
+	--dashboard: #f6f8fb;
+	--dashboard-muted: #eef2f7;
+	--dashboard-panel: #ffffff;
+	--dashboard-panel-strong: #f8fafc;
+	--dashboard-border: #d9e1ea;
+	--dashboard-border-strong: #b8c4d2;
+	--dashboard-text: #162033;
+	--dashboard-text-muted: #66758a;
+	--dashboard-accent: #2563eb;
+	--dashboard-accent-strong: #1d4ed8;
+	--dashboard-accent-soft: #dbeafe;
+	--dashboard-positive: #0f9f6e;
+	--dashboard-negative: #dc2626;
+	--dashboard-warning: #d97706;
+}
+
+.dark {
+	color-scheme: dark;
+	--dashboard: #0d1117;
+	--dashboard-muted: #141a23;
+	--dashboard-panel: #171d27;
+	--dashboard-panel-strong: #1d2531;
+	--dashboard-border: #2b3545;
+	--dashboard-border-strong: #3d4a5f;
+	--dashboard-text: #edf2f8;
+	--dashboard-text-muted: #9aa8ba;
+	--dashboard-accent: #60a5fa;
+	--dashboard-accent-strong: #93c5fd;
+	--dashboard-accent-soft: #1e3a5f;
+	--dashboard-positive: #34d399;
+	--dashboard-negative: #f87171;
+	--dashboard-warning: #fbbf24;
+}
+
+body {
+	margin: 0;
+	background: var(--dashboard);
+	color: var(--dashboard-text);
+	font-family:
+		Geist Variable,
+		ui-sans-serif,
+		system-ui,
+		sans-serif;
+}
