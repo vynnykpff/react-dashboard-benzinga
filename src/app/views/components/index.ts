@@ -1,3 +1,4 @@
+export { BalanceSheetTrendChart } from './BalanceSheetTrendChart'
 export { CompanyFilingsTable } from './CompanyFilingsTable'
 export { DashboardHeader } from './DashboardHeader'
 export { DashboardWorkspaceSection } from './DashboardWorkspaceSection'

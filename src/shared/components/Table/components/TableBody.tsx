@@ -8,6 +8,7 @@ type TableBodyProps<TData> = {
 	columns: TableColumn<TData>[]
 	data: TData[]
 	emptyMessage: string
+	getRowClassName?: (row: TData, index: number) => string | undefined
 	getRowKey: (row: TData, index: number) => string | number
 	isLoading: boolean
 	loadingMessage: string
@@ -18,6 +19,7 @@ export const TableBody = <TData,>({
 	columns,
 	data,
 	emptyMessage,
+	getRowClassName,
 	getRowKey,
 	isLoading,
 	loadingMessage,
@@ -38,6 +40,7 @@ export const TableBody = <TData,>({
 				<TableRow
 					key={getRowKey(row, startIndex + index)}
 					columns={columns}
+					className={getRowClassName?.(row, startIndex + index)}
 					row={row}
 				/>
 			))
