@@ -1,8 +1,8 @@
-import { useCompanyFinancials } from '@/app/hooks/useCompanyFinancials'
 import {
 	DashboardHeader,
 	DashboardWorkspaceSection,
 } from '@/app/views/components'
+import { useCompanyFinancials } from '../hooks'
 
 export function App() {
 	const {

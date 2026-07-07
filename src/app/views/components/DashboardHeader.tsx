@@ -1,6 +1,6 @@
-import { useTheme } from '@/app/hooks/useTheme'
-import { Chip, Paper, Selector, ThemeSwitcher } from '@shared/components'
+import { useTheme } from '@/app/hooks'
 import type { SelectorOption } from '@shared/components'
+import { Chip, Paper, Selector, ThemeSwitcher } from '@shared/components'
 
 type DashboardHeaderProps = {
 	companyOptions: SelectorOption[]
