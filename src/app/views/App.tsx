@@ -1,9 +1,34 @@
+import {
+	DashboardHeader,
+	DashboardWorkspaceSection,
+} from '@/app/views/components'
+import { useCompanyFinancials } from '../hooks'
+
 export function App() {
+	const {
+		companyOptions,
+		isLoading,
+		latestRecord,
+		records,
+		selectedCompany,
+		setSelectedCompany,
+	} = useCompanyFinancials()
+
 	return (
-		<main className="flex min-h-svh flex-col items-center justify-center px-6 py-10 bg-slate-500">
-			<h1 className="text-4xl font-semibold text-slate-950 dark:text-white">
-				App
-			</h1>
+		<main className="min-h-svh bg-dashboard px-4 py-6 text-dashboard-text sm:px-6 sm:py-8 lg:px-8">
+			<div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+				<DashboardHeader
+					companyOptions={companyOptions}
+					selectedCompany={selectedCompany}
+					onCompanyChange={setSelectedCompany}
+				/>
+				<DashboardWorkspaceSection
+					isLoading={isLoading}
+					latestRecord={latestRecord}
+					records={records}
+					selectedCompany={selectedCompany}
+				/>
+			</div>
 		</main>
 	)
 }
