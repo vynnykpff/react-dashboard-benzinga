@@ -132,27 +132,29 @@ export const BalanceSheetTrendChart = ({
 						Quarterly totals by fiscal period
 					</p>
 				</div>
-				<div
-					className={
-						liabilityWarningPoints.length > 0
-							? 'flex items-center gap-2 rounded-full border border-dashboard-warning/35 bg-dashboard-warning/10 px-3 py-1 text-xs font-medium text-dashboard-warning'
-							: 'flex items-center gap-2 rounded-full border border-dashboard-border bg-dashboard-muted/60 px-3 py-1 text-xs font-medium text-dashboard-text-muted'
-					}
-				>
-					{liabilityWarningPoints.length > 0 ? (
-						<>
-							<span className="h-2 w-2 rounded-full bg-dashboard-warning" />
-							{liabilityWarningPoints.length}{' '}
-							{liabilityWarningPoints.length === 1 ? 'quarter' : 'quarters'}{' '}
-							liabilities &gt; assets
-						</>
-					) : (
-						<>
-							<span className="h-2 w-2 rounded-full bg-dashboard-positive" />
-							No liabilities &gt; assets
-						</>
-					)}
-				</div>
+				{chartData.length > 0 ? (
+					<div
+						className={
+							liabilityWarningPoints.length > 0
+								? 'flex items-center gap-2 rounded-full border border-dashboard-warning/35 bg-dashboard-warning/10 px-3 py-1 text-xs font-medium text-dashboard-warning'
+								: 'flex items-center gap-2 rounded-full border border-dashboard-border bg-dashboard-muted/60 px-3 py-1 text-xs font-medium text-dashboard-text-muted'
+						}
+					>
+						{liabilityWarningPoints.length > 0 ? (
+							<>
+								<span className="h-2 w-2 rounded-full bg-dashboard-warning" />
+								{liabilityWarningPoints.length}{' '}
+								{liabilityWarningPoints.length === 1 ? 'quarter' : 'quarters'}{' '}
+								liabilities &gt; assets
+							</>
+						) : (
+							<>
+								<span className="h-2 w-2 rounded-full bg-dashboard-positive" />
+								No liabilities &gt; assets
+							</>
+						)}
+					</div>
+				) : null}
 			</div>
 			{chartData.length > 0 ? (
 				<ChartContainer
