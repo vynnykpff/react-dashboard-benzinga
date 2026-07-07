@@ -2,6 +2,7 @@ import { Loader } from '@shared/components'
 
 import type { FinancialRecord } from '@/app/hooks/useCompanyFinancials'
 
+import { BalanceSheetTrendChart } from './BalanceSheetTrendChart'
 import { CompanyFilingsTable } from './CompanyFilingsTable'
 import { SummaryCard } from './SummaryCard'
 
@@ -44,6 +45,7 @@ export const DashboardWorkspaceSection = ({
 								filingDate={latestRecord.filing_date ?? 'N/A'}
 							/>
 						) : null}
+						<BalanceSheetTrendChart records={records} />
 						<CompanyFilingsTable records={records} />
 					</div>
 				) : (

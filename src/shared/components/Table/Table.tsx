@@ -16,6 +16,7 @@ export const Table = <TData,>({
 	columns,
 	data,
 	getRowKey,
+	getRowClassName,
 	defaultSort,
 	defaultPageSize = 10,
 	pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
@@ -102,6 +103,7 @@ export const Table = <TData,>({
 						columns={columns}
 						data={visibleData}
 						emptyMessage={emptyMessage}
+						getRowClassName={getRowClassName}
 						getRowKey={getRowKey}
 						isLoading={isLoading}
 						loadingMessage={loadingMessage}

@@ -22,26 +22,25 @@ const compareFinancialRecords = (
 	return rightRecord.filing_date.localeCompare(leftRecord.filing_date)
 }
 
-const financialsByCompany = financials.reduce<Record<string, FinancialRecord[]>>(
-	(groupedFinancials, record, index) => {
-		const financialRecord: FinancialRecord = {
-			...record,
-			rowId: `financial-record-${index}`,
+const financialsByCompany = financials.reduce<
+	Record<string, FinancialRecord[]>
+>((groupedFinancials, record, index) => {
+	const financialRecord: FinancialRecord = {
+		...record,
+		rowId: `financial-record-${index}`,
+	}
+
+	financialRecord.symbols.forEach(symbol => {
+		if (!groupedFinancials[symbol]) {
+			groupedFinancials[symbol] = []
 		}
 
-		financialRecord.symbols.forEach(symbol => {
-			if (!groupedFinancials[symbol]) {
-				groupedFinancials[symbol] = []
-			}
+		groupedFinancials[symbol].push(financialRecord)
+		groupedFinancials[symbol].sort(compareFinancialRecords)
+	})
 
-			groupedFinancials[symbol].push(financialRecord)
-			groupedFinancials[symbol].sort(compareFinancialRecords)
-		})
-
-		return groupedFinancials
-	},
-	{},
-)
+	return groupedFinancials
+}, {})
 
 const companyOptions: SelectorOption[] = Object.keys(financialsByCompany)
 	.sort((left, right) => left.localeCompare(right))
@@ -59,12 +58,14 @@ export const useCompanyFinancials = () => {
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		const timeoutId = window.setTimeout(() => {
-			setRecords(selectedCompany ? financialsByCompany[selectedCompany] ?? [] : [])
+		const timeoutId = setTimeout(() => {
+			setRecords(
+				selectedCompany ? (financialsByCompany[selectedCompany] ?? []) : [],
+			)
 			setIsLoading(false)
 		}, 650)
 
-		return () => window.clearTimeout(timeoutId)
+		return () => clearTimeout(timeoutId)
 	}, [selectedCompany])
 
 	const handleCompanyChange = (value: string) => {

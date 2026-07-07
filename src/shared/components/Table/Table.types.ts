@@ -24,6 +24,7 @@ export type TableProps<TData> = {
 	columns: TableColumn<TData>[]
 	data: TData[]
 	getRowKey: (row: TData, index: number) => string | number
+	getRowClassName?: (row: TData, index: number) => string | undefined
 	defaultSort?: TableSortState
 	defaultPageSize?: number
 	pageSizeOptions?: number[]

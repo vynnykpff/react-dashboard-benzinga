@@ -7,6 +7,9 @@ type CompanyFilingsTableProps = {
 	records: FinancialRecord[]
 }
 
+const hasLiabilitiesAboveAssets = (record: FinancialRecord) =>
+	(record.total_liabilities ?? 0) > (record.total_assets ?? 0)
+
 export const CompanyFilingsTable = ({ records }: CompanyFilingsTableProps) => {
 	return (
 		<div className="space-y-3">
@@ -20,6 +23,11 @@ export const CompanyFilingsTable = ({ records }: CompanyFilingsTableProps) => {
 				columns={companyFilingsColumns}
 				data={records}
 				getRowKey={row => row.rowId}
+				getRowClassName={row =>
+					hasLiabilitiesAboveAssets(row)
+						? 'bg-dashboard-warning/10 hover:bg-dashboard-warning/15'
+						: undefined
+				}
 				defaultPageSize={10}
 				emptyMessage="No filings available"
 			/>

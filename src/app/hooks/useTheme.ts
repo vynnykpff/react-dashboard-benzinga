@@ -9,15 +9,13 @@ function getInitialTheme(): ThemeMode {
 		return 'light'
 	}
 
-	const storedTheme = window.localStorage.getItem(STORAGE_KEY)
+	const storedTheme = localStorage.getItem(STORAGE_KEY)
 
 	if (storedTheme === 'light' || storedTheme === 'dark') {
 		return storedTheme
 	}
 
-	return window.matchMedia('(prefers-color-scheme: dark)').matches
-		? 'dark'
-		: 'light'
+	return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 export function useTheme() {
@@ -27,15 +25,13 @@ export function useTheme() {
 		const root = document.documentElement
 
 		root.classList.toggle('dark', theme === 'dark')
-		window.localStorage.setItem(STORAGE_KEY, theme)
+		localStorage.setItem(STORAGE_KEY, theme)
 	}, [theme])
 
 	return {
 		theme,
 		setTheme,
 		toggleTheme: () =>
-			setTheme((currentTheme) =>
-				currentTheme === 'dark' ? 'light' : 'dark',
-			),
+			setTheme(currentTheme => (currentTheme === 'dark' ? 'light' : 'dark')),
 	}
 }
